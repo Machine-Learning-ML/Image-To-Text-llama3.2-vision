@@ -30,26 +30,23 @@ def run_remote_ollama_vision(image_path):
     resp.raise_for_status()
 
     collected = []
-    print("\n--- Debug Output: All Parsed JSON Lines ---")
     for line in resp.text.strip().splitlines():
         line = line.strip()
         if not line:
             continue
         try:
-            obj = json.loads(line)
-            print("Parsed object:", obj)
-            if "message" in obj and "content" in obj["message"]:
-                collected.append(obj["message"]["content"])
+          obj = json.loads(line)
+          if "message" in obj and "content" in obj["message"]:
+           collected.append(obj["message"]["content"])
         except Exception as e:
             print("JSON error:", str(e), "Line:", line)
             continue
-    print("--- End Debug Output ---\n")
 
     if collected:
         final_text = "".join(collected)
         print("Extracted text:\n", final_text)
     else:
-        print("No valid message content found in streaming response.")
+        print("No Message.")
 
 if __name__ == "__main__":
     run_remote_ollama_vision(IMAGE_PATH)
